@@ -1,4 +1,4 @@
-package graph
+package usecase
 
 // This file will be automatically regenerated based on the schema, any resolver implementations
 // will be copied through when generating and any unknown code will be moved to the end.
@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/abekoh/everywhere-todo/graph"
 	"github.com/abekoh/everywhere-todo/graph/model"
 )
 
@@ -31,25 +32,15 @@ func (r *taskResolver) SubTasks(ctx context.Context, obj *model.Task) ([]*model.
 	panic(fmt.Errorf("not implemented: SubTasks - subTasks"))
 }
 
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+// Mutation returns graph.MutationResolver implementation.
+func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
 
-// Query returns QueryResolver implementation.
-func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+// Query returns graph.QueryResolver implementation.
+func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
-// Task returns TaskResolver implementation.
-func (r *Resolver) Task() TaskResolver { return &taskResolver{r} }
+// Task returns graph.TaskResolver implementation.
+func (r *Resolver) Task() graph.TaskResolver { return &taskResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type taskResolver struct{ *Resolver }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//     it when you're done.
-//   - You have helper methods in this file. Move them out to keep these resolver files clean.
-func (r *queryResolver) LatestTasks(ctx context.Context) ([]*model.Task, error) {
-	panic(fmt.Errorf("not implemented: LatestTasks - latestTasks"))
-}

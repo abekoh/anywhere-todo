@@ -8,18 +8,34 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/abekoh/everywhere-todo/ctxx"
 	"github.com/abekoh/everywhere-todo/graph"
+	"github.com/abekoh/everywhere-todo/usecase"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 	migrate "github.com/rubenv/sql-migrate"
 )
 
 func main() {
-	execMigrate()
+	db, err := sql.Open("sqlite3", "test.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	execMigrate(db)
 
 	e := echo.New()
 
-	gqlSrv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			ctx := c.Request().Context()
+			ctx = ctxx.SetDB(ctx, db)
+			c.SetRequest(c.Request().WithContext(ctx))
+			return next(c)
+		}
+	})
+
+	gqlSrv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &usecase.Resolver{}}))
 
 	e.POST("query", func(c echo.Context) error {
 		gqlSrv.ServeHTTP(c.Response(), c.Request())
@@ -36,11 +52,7 @@ func main() {
 
 }
 
-func execMigrate() {
-	db, err := sql.Open("sqlite3", "test.db")
-	if err != nil {
-		log.Fatal(err)
-	}
+func execMigrate(db *sql.DB) {
 	migrations := &migrate.FileMigrationSource{
 		Dir: "migrations",
 	}

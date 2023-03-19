@@ -26,7 +26,7 @@ VALUES (?, ?, ?, ?, ?, ?)
 `
 
 type InsertTaskLogParams struct {
-	TaskID      sql.NullString
+	TaskID      string
 	TaskLogID   string
 	Title       string
 	Description sql.NullString

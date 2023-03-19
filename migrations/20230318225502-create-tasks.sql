@@ -7,7 +7,7 @@ CREATE TABLE tasks
 CREATE TABLE task_logs
 (
     task_log_id TEXT PRIMARY KEY,
-    task_id     TEXT REFERENCES tasks (task_id) ON DELETE CASCADE,
+    task_id     TEXT      NOT NULL REFERENCES tasks (task_id) ON DELETE CASCADE,
     title       TEXT      NOT NULL,
     description TEXT,
     done        INTEGER   NOT NULL DEFAULT 0,

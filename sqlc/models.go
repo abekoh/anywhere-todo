@@ -16,7 +16,7 @@ type Task struct {
 
 type TaskLog struct {
 	TaskLogID   string
-	TaskID      sql.NullString
+	TaskID      string
 	Title       string
 	Description sql.NullString
 	Done        int64

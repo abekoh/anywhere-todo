@@ -7,6 +7,7 @@ require (
 	github.com/kyleconroy/sqlc v1.17.2
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/mattn/go-sqlite3 v1.14.16
+	github.com/pkg/errors v0.9.1
 	github.com/rubenv/sql-migrate v1.4.0
 	github.com/vektah/gqlparser/v2 v2.5.1
 )

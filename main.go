@@ -35,7 +35,7 @@ func main() {
 		}
 	})
 
-	gqlSrv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &usecase.Resolver{}}))
+	gqlSrv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: usecase.NewResolver()}))
 
 	e.POST("query", func(c echo.Context) error {
 		gqlSrv.ServeHTTP(c.Response(), c.Request())

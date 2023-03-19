@@ -11,3 +11,9 @@ import (
 type Resolver struct {
 	taskRepo *taskrepo.Repository
 }
+
+func NewResolver() *Resolver {
+	return &Resolver{
+		taskRepo: &taskrepo.Repository{},
+	}
+}

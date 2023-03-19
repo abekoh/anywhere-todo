@@ -15,11 +15,11 @@ type Task struct {
 }
 
 type TaskLog struct {
-	TaskLogID   string
-	TaskID      string
-	Title       string
-	Description sql.NullString
-	Done        int64
-	Deadline    sql.NullTime
-	CreatedAt   time.Time
+	TaskLogID string
+	TaskID    string
+	Title     string
+	Detail    sql.NullString
+	Done      int64
+	Deadline  sql.NullTime
+	CreatedAt time.Time
 }

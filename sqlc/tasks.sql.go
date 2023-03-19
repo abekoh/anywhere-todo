@@ -21,17 +21,17 @@ func (q *Queries) InsertTask(ctx context.Context, taskID string) error {
 }
 
 const insertTaskLog = `-- name: InsertTaskLog :exec
-INSERT INTO task_logs (task_id, task_log_id, title, description, done, deadline)
+INSERT INTO task_logs (task_id, task_log_id, title, detail, done, deadline)
 VALUES (?, ?, ?, ?, ?, ?)
 `
 
 type InsertTaskLogParams struct {
-	TaskID      string
-	TaskLogID   string
-	Title       string
-	Description sql.NullString
-	Done        int64
-	Deadline    sql.NullTime
+	TaskID    string
+	TaskLogID string
+	Title     string
+	Detail    sql.NullString
+	Done      int64
+	Deadline  sql.NullTime
 }
 
 func (q *Queries) InsertTaskLog(ctx context.Context, arg InsertTaskLogParams) error {
@@ -39,15 +39,39 @@ func (q *Queries) InsertTaskLog(ctx context.Context, arg InsertTaskLogParams) er
 		arg.TaskID,
 		arg.TaskLogID,
 		arg.Title,
-		arg.Description,
+		arg.Detail,
 		arg.Done,
 		arg.Deadline,
 	)
 	return err
 }
 
+const selectLatestTaskLog = `-- name: SelectLatestTaskLog :one
+SELECT tl.task_log_id, tl.task_id, tl.title, tl.detail, tl.done, tl.deadline, tl.created_at
+FROM task_logs tl
+         JOIN (SELECT task_log_id, RANK() OVER (PARTITION BY task_id ORDER BY task_log_id desc) AS rnk
+               FROM task_logs) ltl USING (task_log_id)
+WHERE tl.task_id = ?
+  AND ltl.rnk = 1
+`
+
+func (q *Queries) SelectLatestTaskLog(ctx context.Context, taskID string) (TaskLog, error) {
+	row := q.db.QueryRowContext(ctx, selectLatestTaskLog, taskID)
+	var i TaskLog
+	err := row.Scan(
+		&i.TaskLogID,
+		&i.TaskID,
+		&i.Title,
+		&i.Detail,
+		&i.Done,
+		&i.Deadline,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const selectLatestTaskLogs = `-- name: SelectLatestTaskLogs :many
-SELECT tl.task_log_id, tl.task_id, tl.title, tl.description, tl.done, tl.deadline, tl.created_at
+SELECT tl.task_log_id, tl.task_id, tl.title, tl.detail, tl.done, tl.deadline, tl.created_at
 FROM task_logs tl
          JOIN (SELECT task_log_id, RANK() OVER (PARTITION BY task_id ORDER BY task_log_id desc) AS rnk
                FROM task_logs) ltl USING (task_log_id)
@@ -67,7 +91,7 @@ func (q *Queries) SelectLatestTaskLogs(ctx context.Context) ([]TaskLog, error) {
 			&i.TaskLogID,
 			&i.TaskID,
 			&i.Title,
-			&i.Description,
+			&i.Detail,
 			&i.Done,
 			&i.Deadline,
 			&i.CreatedAt,

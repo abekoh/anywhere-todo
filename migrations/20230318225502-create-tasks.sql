@@ -9,7 +9,7 @@ CREATE TABLE task_logs
     task_log_id TEXT PRIMARY KEY,
     task_id     TEXT      NOT NULL REFERENCES tasks (task_id) ON DELETE CASCADE,
     title       TEXT      NOT NULL,
-    description TEXT,
+    detail      TEXT,
     done        INTEGER   NOT NULL DEFAULT 0,
     deadline    TIMESTAMP,
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

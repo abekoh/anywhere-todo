@@ -23,7 +23,7 @@ func (r Repository) Create(ctx context.Context, task *task.ValidatedTask) error 
 		TaskID:      string(task.TaskID),
 		TaskLogID:   string(task.TaskLogID),
 		Title:       task.Title,
-		Description: toNullString(task.Description),
+		Description: toNullString(task.Detail),
 		Done:        toIntBool(task.Done),
 		Deadline:    toNullTime(task.Deadline),
 	}); err != nil {

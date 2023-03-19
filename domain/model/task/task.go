@@ -9,20 +9,20 @@ type (
 	LogID string
 
 	Task struct {
-		TaskLogID   LogID
-		TaskID      ID
-		Title       string
-		Description *string
-		Done        bool
-		Deadline    *time.Time
+		TaskLogID LogID
+		TaskID    ID
+		Title     string
+		Detail    *string
+		Done      bool
+		Deadline  *time.Time
 	}
 )
 
 type ValidatedTask struct {
-	Task
+	*Task
 }
 
-func (t Task) Validate() (ValidatedTask, error) {
+func (t Task) Validate() (*ValidatedTask, error) {
 	// TODO: validation
-	return ValidatedTask{Task: t}, nil
+	return &ValidatedTask{Task: &t}, nil
 }

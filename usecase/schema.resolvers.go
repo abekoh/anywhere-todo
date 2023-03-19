@@ -8,13 +8,38 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/abekoh/everywhere-todo/domain/model/task"
 	"github.com/abekoh/everywhere-todo/graph"
 	"github.com/abekoh/everywhere-todo/graph/model"
+	"github.com/oklog/ulid/v2"
+	perrors "github.com/pkg/errors"
 )
 
 // CreateTask is the resolver for the createTask field.
 func (r *mutationResolver) CreateTask(ctx context.Context, input model.NewTask) (*model.Task, error) {
-	panic(fmt.Errorf("not implemented: CreateTask - createTask"))
+	t := task.Task{
+		TaskLogID: task.LogID(ulid.Make().String()),
+		TaskID:    task.ID(ulid.Make().String()),
+		Title:     input.Title,
+		Detail:    input.Detail,
+		Done:      false,
+		Deadline:  input.Deadline,
+	}
+	vt, err := t.Validate()
+	if err != nil {
+		return nil, perrors.WithStack(err)
+	}
+	if err := r.taskRepo.Create(ctx, vt); err != nil {
+		return nil, perrors.WithStack(err)
+	}
+	return &model.Task{
+		TaskLogID: string(vt.TaskLogID),
+		TaskID:    string(vt.TaskID),
+		Title:     vt.Title,
+		Detail:    vt.Detail,
+		Done:      vt.Done,
+		Deadline:  vt.Deadline,
+	}, nil
 }
 
 // UpdateTask is the resolver for the updateTask field.

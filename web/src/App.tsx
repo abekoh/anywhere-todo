@@ -3,7 +3,9 @@ import {useTasks} from "./api/getTasks";
 import {TaskCard} from "./components/Card";
 
 const app = () => {
-    const [tasks] = useTasks();
+    const {data: tasks} = useTasks({
+        refreshInterval: 3000,
+    });
 
     return <Container>
         <VStack alignItems="flex-start">

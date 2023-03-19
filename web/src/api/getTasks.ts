@@ -1,4 +1,8 @@
 import {Task} from "../types";
+import gql from "graphql-tag";
+import {GraphQLClient} from "graphql-request";
+import {getSdk} from "../gql/client";
+import useSWR, {SWRConfiguration} from 'swr'
 
 const mockTasks: Task[] = [
     {
@@ -23,6 +27,38 @@ const mockTasks: Task[] = [
     }
 ]
 
-export const useTasks = (): [tasks: Task[]] => {
-    return [mockTasks];
+const allTasks = gql`
+    query allTasks {
+        tasks {
+            taskId
+            taskLogId
+            title
+            detail
+            done
+            deadline
+        }
+    }
+`
+const getTasks = async (): Promise<Task[]> => {
+    const client = new GraphQLClient("http://localhost:8080/query");
+    const sdk = getSdk(client);
+    const res = await sdk.allTasks();
+    if (!res.data) {
+        throw new Error("No data");
+    }
+    return res.data.tasks.map((task) => ({
+            taskId: task.taskId,
+            taskLogId: task.taskLogId,
+            title: task.title,
+            detail: task.detail ?? undefined,
+            done: task.done,
+            deadline: task.deadline ? new Date(task.deadline) : undefined,
+        })
+    )
+}
+
+export const useTasks = (options?: SWRConfiguration<Task[], Error>) => {
+    const client = new GraphQLClient("http://localhost:8080/query");
+    const sdk = getSdk(client);
+    return useSWR<Task[], Error>("allTasks", getTasks, options);
 };

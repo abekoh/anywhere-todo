@@ -12,6 +12,7 @@ import (
 	"github.com/abekoh/everywhere-todo/graph"
 	"github.com/abekoh/everywhere-todo/usecase"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
 	migrate "github.com/rubenv/sql-migrate"
 )
@@ -25,6 +26,9 @@ func main() {
 	execMigrate(db)
 
 	e := echo.New()
+
+	// TODO: strict config
+	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

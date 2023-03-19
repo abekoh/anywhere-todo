@@ -2,12 +2,11 @@ package taskrepo
 
 import (
 	"context"
-	"database/sql"
-	"time"
 
 	"github.com/abekoh/everywhere-todo/ctxx"
 	"github.com/abekoh/everywhere-todo/domain/model/task"
 	"github.com/abekoh/everywhere-todo/sqlc"
+	"github.com/abekoh/everywhere-todo/utils"
 	"github.com/pkg/errors"
 )
 
@@ -28,9 +27,9 @@ func (r Repository) Update(ctx context.Context, task *task.ValidatedTask) error 
 		TaskID:    string(task.TaskID),
 		TaskLogID: string(task.TaskLogID),
 		Title:     task.Title,
-		Detail:    toNullString(task.Detail),
-		Done:      toIntBool(task.Done),
-		Deadline:  toNullTime(task.Deadline),
+		Detail:    utils.ToNullString(task.Detail),
+		Done:      utils.ToInt64Bool(task.Done),
+		Deadline:  utils.ToNullTime(task.Deadline),
 	}); err != nil {
 		return errors.WithStack(err)
 	}
@@ -48,58 +47,9 @@ func (r Repository) Get(ctx context.Context, id task.ID) (*task.ValidatedTask, e
 			TaskLogID: task.LogID(tl.TaskLogID),
 			TaskID:    task.ID(tl.TaskID),
 			Title:     tl.Title,
-			Detail:    toString(tl.Detail),
-			Done:      toBool(tl.Done),
-			Deadline:  toTime(tl.Deadline),
+			Detail:    utils.ToString(tl.Detail),
+			Done:      utils.ToBool(tl.Done),
+			Deadline:  utils.ToTime(tl.Deadline),
 		},
 	}, nil
-}
-
-func toIntBool(b bool) int64 {
-	if b {
-		return 1
-	} else {
-		return 0
-	}
-}
-
-func toBool(i int64) bool {
-	if i == 0 {
-		return false
-	}
-	return true
-}
-
-func toNullString(s *string) sql.NullString {
-	if s == nil {
-		return sql.NullString{}
-	}
-	return sql.NullString{
-		String: *s,
-		Valid:  true,
-	}
-}
-
-func toString(s sql.NullString) *string {
-	if s.Valid {
-		return &s.String
-	}
-	return nil
-}
-
-func toNullTime(t *time.Time) sql.NullTime {
-	if t == nil {
-		return sql.NullTime{}
-	}
-	return sql.NullTime{
-		Time:  *t,
-		Valid: true,
-	}
-}
-
-func toTime(t sql.NullTime) *time.Time {
-	if t.Valid {
-		return &t.Time
-	}
-	return nil
 }

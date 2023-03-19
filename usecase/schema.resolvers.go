@@ -8,9 +8,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/abekoh/everywhere-todo/ctxx"
 	"github.com/abekoh/everywhere-todo/domain/model/task"
 	"github.com/abekoh/everywhere-todo/graph"
 	"github.com/abekoh/everywhere-todo/graph/model"
+	"github.com/abekoh/everywhere-todo/sqlc"
 	"github.com/oklog/ulid/v2"
 	perrors "github.com/pkg/errors"
 )
@@ -80,7 +82,12 @@ func (r *mutationResolver) UpdateTask(ctx context.Context, input model.UpdatedTa
 
 // Tasks is the resolver for the tasks field.
 func (r *queryResolver) Tasks(ctx context.Context) ([]*model.Task, error) {
-	panic(fmt.Errorf("not implemented: Tasks - tasks"))
+	queries := sqlc.New(ctxx.GetDB(ctx))
+	tasks, err := queries.SelectLatestTaskLogs(ctx)
+	if err != nil {
+		return nil, perrors.WithStack(err)
+	}
+	return MapSlices(tasks, MapTaskSQLC2GQL), nil
 }
 
 // SubTasks is the resolver for the subTasks field.

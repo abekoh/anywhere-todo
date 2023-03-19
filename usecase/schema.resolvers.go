@@ -44,7 +44,38 @@ func (r *mutationResolver) CreateTask(ctx context.Context, input model.NewTask) 
 
 // UpdateTask is the resolver for the updateTask field.
 func (r *mutationResolver) UpdateTask(ctx context.Context, input model.UpdatedTask) (*model.Task, error) {
-	panic(fmt.Errorf("not implemented: UpdateTask - updateTask"))
+	vt, err := r.taskRepo.Get(ctx, task.ID(input.TaskID))
+	if err != nil {
+		return nil, err
+	}
+	t := vt.Task
+	if input.Title != nil {
+		t.Title = *input.Title
+	}
+	if input.Detail != nil {
+		t.Detail = input.Detail
+	}
+	if input.Done != nil {
+		t.Done = *input.Done
+	}
+	if input.Deadline != nil {
+		t.Deadline = input.Deadline
+	}
+	newVt, err := t.Validate()
+	if err != nil {
+		return nil, perrors.WithStack(err)
+	}
+	if err := r.taskRepo.Update(ctx, newVt); err != nil {
+		return nil, perrors.WithStack(err)
+	}
+	return &model.Task{
+		TaskLogID: string(newVt.TaskLogID),
+		TaskID:    string(newVt.TaskID),
+		Title:     newVt.Title,
+		Detail:    newVt.Detail,
+		Done:      newVt.Done,
+		Deadline:  newVt.Deadline,
+	}, nil
 }
 
 // Tasks is the resolver for the tasks field.

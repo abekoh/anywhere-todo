@@ -51,6 +51,7 @@ func (r *mutationResolver) UpdateTask(ctx context.Context, input model.UpdatedTa
 		return nil, err
 	}
 	t := vt.Task
+	t.TaskLogID = task.LogID(ulid.Make().String())
 	if input.Title != nil {
 		t.Title = *input.Title
 	}

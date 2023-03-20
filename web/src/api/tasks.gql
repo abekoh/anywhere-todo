@@ -1,10 +1,10 @@
 query AllTasks {
-    tasks {
-        taskId
-        taskLogId
-        title
-        detail
-        done
-        deadline
-    }
+  tasks {
+    taskId
+    taskLogId
+    title
+    detail
+    done
+    deadline
+  }
 }

@@ -20,6 +20,6 @@ const tasks = async (): Promise<Task[]> => {
   }));
 };
 
-export const useTasks = (options?: SWRConfiguration<Task[], Error>) => {
+export const useTaskAPI = (options?: SWRConfiguration<Task[], Error>) => {
   return useSWR<Task[], Error>("tasks", tasks, options);
 };

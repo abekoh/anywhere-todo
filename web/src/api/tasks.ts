@@ -22,7 +22,5 @@ const tasks = async (): Promise<Task[]> => {
 }
 
 export const useTasks = (options?: SWRConfiguration<Task[], Error>) => {
-    const client = new GraphQLClient("http://localhost:8080/query");
-    const sdk = getSdk(client);
     return useSWR<Task[], Error>("tasks", tasks, options);
 }

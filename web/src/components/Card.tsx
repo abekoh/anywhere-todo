@@ -3,9 +3,8 @@ import {
   CardBody,
   CardHeader,
   Checkbox,
-  Heading,
+  Input,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { Task } from "../types";
@@ -19,10 +18,15 @@ export const TaskCard: React.FC<Props> = ({ task }) => (
     <Checkbox size="lg" p={2} isChecked={task.done} />
     <Stack>
       <CardHeader>
-        <Heading size="md">{task.title}</Heading>
+        <Input
+          size="lg"
+          fontWeight="bold"
+          variant="unstyled"
+          value={task.detail}
+        ></Input>
       </CardHeader>
       <CardBody>
-        <Text>{task.detail}</Text>
+        <Input variant="unstyled" value={task.detail}></Input>
       </CardBody>
     </Stack>
   </Card>

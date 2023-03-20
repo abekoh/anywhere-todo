@@ -11,6 +11,7 @@ import { Task } from "../types";
 
 type Props = {
   task: Task;
+  updateTask: (task: Task) => void;
 };
 
 export const TaskCard: React.FC<Props> = ({ task }) => (

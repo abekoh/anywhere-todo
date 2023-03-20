@@ -1,7 +1,7 @@
 import { Container, Spinner, VStack } from "@chakra-ui/react";
 import { useTaskAPI } from "./api/tasks";
 import { TaskCard } from "./components/Card";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Task } from "./types";
 
 const app = () => {
@@ -10,6 +10,15 @@ const app = () => {
   });
 
   const [localTasks, setLocalTasks] = useState<Task[]>([]);
+
+  const updateTask = useCallback(
+    (task: Task) => {
+      setLocalTasks((tasks) =>
+        tasks.map((t) => (t.taskId === task.taskId ? task : t))
+      );
+    },
+    [setLocalTasks]
+  );
 
   useEffect(() => {
     setLocalTasks(apiTasks);
@@ -23,7 +32,7 @@ const app = () => {
     <Container>
       <VStack alignItems="flex-start">
         {localTasks.map((task) => (
-          <TaskCard key={task.taskId} task={task} />
+          <TaskCard key={task.taskId} task={task} updateTask={updateTask} />
         ))}
       </VStack>
     </Container>

@@ -1,5 +1,5 @@
 import {Container, Spinner, VStack} from "@chakra-ui/react";
-import {useTasks} from "./api/getTasks";
+import {useTasks} from "./api/tasks";
 import {TaskCard} from "./components/Card";
 
 const app = () => {

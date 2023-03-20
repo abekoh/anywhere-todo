@@ -80,7 +80,7 @@ export type AllTasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 
 
 
 export const AllTasksDocument = gql`
-    query allTasks {
+    query AllTasks {
   tasks {
     taskId
     taskLogId
@@ -99,8 +99,8 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 const AllTasksDocumentString = print(AllTasksDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    allTasks(variables?: AllTasksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: AllTasksQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AllTasksQuery>(AllTasksDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allTasks', 'query');
+    AllTasks(variables?: AllTasksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: AllTasksQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AllTasksQuery>(AllTasksDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllTasks', 'query');
     }
   };
 }

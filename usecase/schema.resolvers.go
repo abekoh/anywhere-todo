@@ -22,10 +22,10 @@ import (
 func (r *mutationResolver) CreateTask(ctx context.Context, input model.NewTask) (*model.Task, error) {
 	t := task.Task{
 		TaskLogID: task.LogID(ulid.Make().String()),
-		TaskID:    task.ID(ulid.Make().String()),
+		TaskID:    task.ID(input.TaskID),
 		Title:     input.Title,
 		Detail:    input.Detail,
-		Done:      false,
+		Done:      input.Done,
 		Deadline:  input.Deadline,
 	}
 	vt, err := t.Validate()
@@ -53,15 +53,11 @@ func (r *mutationResolver) UpdateTask(ctx context.Context, input model.UpdatedTa
 	}
 	t := vt.Task
 	t.TaskLogID = task.LogID(ulid.Make().String())
-	if input.Title != nil {
-		t.Title = *input.Title
-	}
+	t.Title = input.Title
 	if input.Detail != nil {
 		t.Detail = input.Detail
 	}
-	if input.Done != nil {
-		t.Done = *input.Done
-	}
+	t.Done = input.Done
 	if input.Deadline != nil {
 		t.Deadline = input.Deadline
 	}

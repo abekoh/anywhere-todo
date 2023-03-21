@@ -7,8 +7,10 @@ import (
 )
 
 type NewTask struct {
+	TaskID   string     `json:"taskId"`
 	Title    string     `json:"title"`
 	Detail   *string    `json:"detail"`
+	Done     bool       `json:"done"`
 	Deadline *time.Time `json:"deadline"`
 }
 
@@ -28,8 +30,8 @@ type SyncTasks struct {
 
 type UpdatedTask struct {
 	TaskID   string     `json:"taskId"`
-	Title    *string    `json:"title"`
+	Title    string     `json:"title"`
 	Detail   *string    `json:"detail"`
-	Done     *bool      `json:"done"`
+	Done     bool       `json:"done"`
 	Deadline *time.Time `json:"deadline"`
 }

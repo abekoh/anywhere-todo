@@ -24,16 +24,18 @@ type Query {
 }
 
 input NewTask {
+    taskId: ID!
     title: String!
     detail: String
+    done: Boolean!
     deadline: Time
 }
 
 input UpdatedTask {
     taskId: ID!
-    title: String
+    title: String!
     detail: String
-    done: Boolean
+    done: Boolean!
     deadline: Time
 }
 

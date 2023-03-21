@@ -3182,13 +3182,21 @@ func (ec *executionContext) unmarshalInputNewTask(ctx context.Context, obj inter
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "detail", "deadline"}
+	fieldsInOrder := [...]string{"taskId", "title", "detail", "done", "deadline"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "taskId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taskId"))
+			it.TaskID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "title":
 			var err error
 
@@ -3202,6 +3210,14 @@ func (ec *executionContext) unmarshalInputNewTask(ctx context.Context, obj inter
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("detail"))
 			it.Detail, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "done":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("done"))
+			it.Done, err = ec.unmarshalNBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3281,7 +3297,7 @@ func (ec *executionContext) unmarshalInputUpdatedTask(ctx context.Context, obj i
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			it.Title, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.Title, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3297,7 +3313,7 @@ func (ec *executionContext) unmarshalInputUpdatedTask(ctx context.Context, obj i
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("done"))
-			it.Done, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			it.Done, err = ec.unmarshalNBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}

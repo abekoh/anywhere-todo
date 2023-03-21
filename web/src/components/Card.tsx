@@ -5,6 +5,7 @@ import {
   Checkbox,
   Input,
   Stack,
+  Tag,
 } from "@chakra-ui/react";
 import React from "react";
 import { Task } from "../types";
@@ -50,6 +51,9 @@ export const TaskCard: React.FC<Props> = ({ task, saveTask }) => {
             value={task.detail ?? ""}
             onChange={handleInputChange("detail")}
           ></Input>
+          <Tag size="sm" mt={2}>
+            {task.draftStatus.toUpperCase()}
+          </Tag>
         </CardBody>
       </Stack>
     </Card>

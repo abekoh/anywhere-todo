@@ -13,9 +13,9 @@ const App = () => {
     revalidateOnReconnect: false,
     onSuccess: async (data) => {
       const cached = await db.tasks.toArray();
-      const unsaved = cached.filter((t) => t.syncStatus === "local");
+      const savedLocal = cached.filter((t) => t.syncStatus === "local");
       // FIXME: should be remain latest
-      setLocalTasks([...data, ...unsaved]);
+      setLocalTasks([...data, ...savedLocal]);
     },
   });
 
@@ -75,10 +75,12 @@ const App = () => {
   );
 
   const syncLocal = useCallback(async () => {
-    setLocalTasks((prev) => {
-      return prev.map((t) => ({ ...t, syncStatus: "local" }));
-    });
-    await db.tasks.bulkPut(localTasks);
+    const localSynced: Task[] = localTasks.map((t) => ({
+      ...t,
+      syncStatus: "local",
+    }));
+    await db.tasks.bulkPut(localSynced);
+    setLocalTasks(localSynced);
   }, [localTasks]);
 
   const syncRemote = useCallback(async () => {

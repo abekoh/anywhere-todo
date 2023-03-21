@@ -22,7 +22,8 @@ const tasks = async (): Promise<Task[]> => {
     done: task.done,
     deadline: task.deadline ? new Date(task.deadline) : undefined,
     valueStatus: "unchanged",
-    syncStatus: "remote",
+    synced: true,
+    offline: false,
   }));
 };
 
@@ -54,7 +55,8 @@ const syncTasks = async (tasks: Task[]): Promise<Task[]> => {
     done: task.done,
     deadline: task.deadline ? new Date(task.deadline) : undefined,
     valueStatus: "unchanged",
-    syncStatus: "remote",
+    synced: true,
+    offline: false,
   }));
 };
 

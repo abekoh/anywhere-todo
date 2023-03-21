@@ -54,9 +54,16 @@ export const TaskCard: React.FC<Props> = ({ task, saveTask }) => {
           <Tag size="sm" mt={2}>
             {task.valueStatus.toUpperCase()}
           </Tag>
-          <Tag size="sm" mt={2}>
-            {task.syncStatus.toUpperCase()}
-          </Tag>
+          {task.synced && (
+            <Tag size="sm" mt={2}>
+              Synced
+            </Tag>
+          )}
+          {task.offline && (
+            <Tag size="sm" mt={2}>
+              Offline
+            </Tag>
+          )}
         </CardBody>
       </Stack>
     </Card>

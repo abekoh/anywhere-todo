@@ -13,7 +13,7 @@ const App = () => {
     revalidateOnReconnect: false,
     onSuccess: async (data) => {
       const cached = (await db.tasks.toArray()).filter(
-        (t) => t.syncStatus === "local"
+        (t) => t.valueStatus !== "unchanged" && !t.synced
       );
       const cachedIds = cached.map((t) => t.taskId);
       const remoteFiltered = data.filter((t) => !cachedIds.includes(t.taskId));
@@ -57,7 +57,8 @@ const App = () => {
         title: "",
         done: false,
         valueStatus: "new",
-        syncStatus: "unsaved",
+        synced: false,
+        offline: false,
       };
       return [...prev, newTask].sort((a, b) => (a.taskId < b.taskId ? -1 : 1));
     });
@@ -69,8 +70,13 @@ const App = () => {
         (t) => t.taskId === draftedTask.taskId
       );
       const updated: Task = syncedTarget
-        ? { ...draftedTask, valueStatus: "updated", syncStatus: "unsaved" }
-        : { ...draftedTask, valueStatus: "new", syncStatus: "unsaved" };
+        ? {
+            ...draftedTask,
+            valueStatus: "updated",
+            synced: false,
+            offline: false,
+          }
+        : { ...draftedTask, valueStatus: "new", synced: false, offline: false };
       setLocalTasks((prev) => {
         return [
           ...prev.filter((t) => t.taskId !== updated.taskId),
@@ -84,7 +90,7 @@ const App = () => {
   const syncLocal = useCallback(async () => {
     const localSynced: Task[] = localTasks.map((t) => ({
       ...t,
-      syncStatus: "local",
+      offline: true,
     }));
     await db.tasks.bulkPut(localSynced);
     setLocalTasks(localSynced);

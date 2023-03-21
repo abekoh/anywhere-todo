@@ -4,8 +4,6 @@ export type TaskLogId = string;
 
 export type ValueStatus = "unchanged" | "new" | "updated";
 
-export type SyncStatus = "unsaved" | "local" | "remote";
-
 export type Task = {
   taskId: TaskId;
   taskLogId?: TaskLogId;
@@ -14,5 +12,6 @@ export type Task = {
   done: boolean;
   deadline?: Date;
   valueStatus: ValueStatus;
-  syncStatus: SyncStatus;
+  synced: boolean;
+  offline: boolean;
 };

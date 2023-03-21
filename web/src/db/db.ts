@@ -1,8 +1,8 @@
 import Dexie, { Table } from "dexie";
-import { Task } from "../types";
+import { TaskV2 } from "../types/z";
 
 class Database extends Dexie {
-  tasks!: Table<Task>;
+  tasks!: Table<TaskV2>;
 
   constructor() {
     super("Database");

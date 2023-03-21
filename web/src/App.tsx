@@ -2,9 +2,9 @@ import { Button, Container, Spinner, useToast, VStack } from "@chakra-ui/react";
 import { useGetTask, useSyncTask } from "./api/tasks";
 import { TaskCard } from "./components/Card";
 import React, { useCallback, useEffect, useState } from "react";
-import { Task } from "./types";
 import { ulid } from "ulid";
 import { db } from "./db/db";
+import { taskIdV2, taskV2, TaskV2, valueStatusV2 } from "./types/z";
 
 const App = () => {
   const { data: apiTasks, mutate: fetch } = useGetTask({
@@ -14,7 +14,7 @@ const App = () => {
     loadingTimeout: 2000,
     onSuccess: async (data) => {
       const cached = (await db.tasks.toArray()).filter(
-        (t) => t.valueStatus !== "unchanged" && !t.synced
+        (t) => t.valueStatus !== valueStatusV2.enum.unchaged && !t.synced
       );
       const cachedIds = cached.map((t) => t.taskId);
       const remoteFiltered = data.filter((t) => !cachedIds.includes(t.taskId));
@@ -53,28 +53,28 @@ const App = () => {
     },
   });
 
-  const [localTasks, setLocalTasks] = useState<Task[]>([]);
+  const [localTasks, setLocalTasks] = useState<TaskV2[]>([]);
 
   const addTask = useCallback(() => {
     setLocalTasks((prev) => {
-      const newTask: Task = {
-        taskId: ulid(), // FIXME: reassigned when synced
+      const newTask: TaskV2 = taskV2.parse({
+        taskId: taskIdV2.parse(ulid()),
         title: "",
         done: false,
         valueStatus: "new",
         synced: false,
         offline: false,
-      };
+      });
       return [...prev, newTask].sort((a, b) => (a.taskId < b.taskId ? -1 : 1));
     });
   }, []);
 
   const saveTask = useCallback(
-    (draftedTask: Task) => {
+    (draftedTask: TaskV2) => {
       const syncedTarget = (apiTasks ?? []).find(
         (t) => t.taskId === draftedTask.taskId
       );
-      const updated: Task = syncedTarget
+      const updated: TaskV2 = syncedTarget
         ? {
             ...draftedTask,
             valueStatus: "updated",
@@ -93,7 +93,7 @@ const App = () => {
   );
 
   const syncLocal = useCallback(async () => {
-    const localSynced: Task[] = localTasks.map((t) => ({
+    const localSynced: TaskV2[] = localTasks.map((t) => ({
       ...t,
       offline: true,
     }));

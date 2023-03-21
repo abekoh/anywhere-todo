@@ -85,7 +85,6 @@ const App = () => {
           <TaskCard key={task.taskId} task={task} saveTask={saveTask} />
         ))}
       </VStack>
-      <p>{JSON.stringify(localTasks)}</p>
     </Container>
   );
 };

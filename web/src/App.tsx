@@ -75,11 +75,15 @@ const App = () => {
   );
 
   const syncLocal = useCallback(async () => {
+    setLocalTasks((prev) => {
+      return prev.map((t) => ({ ...t, syncStatus: "local" }));
+    });
     await db.tasks.bulkPut(localTasks);
   }, [localTasks]);
 
   const syncRemote = useCallback(async () => {
     await request(localTasks);
+    await db.tasks.clear();
     await fetch();
   }, [fetch, localTasks, request]);
 

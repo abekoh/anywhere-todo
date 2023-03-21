@@ -4,6 +4,7 @@ import { TaskCard } from "./components/Card";
 import React, { useCallback, useEffect, useState } from "react";
 import { Task } from "./types";
 import { ulid } from "ulid";
+import { db } from "./db/db";
 
 const App = () => {
   const { data: apiTasks, mutate: fetch } = useGetTask({
@@ -66,10 +67,14 @@ const App = () => {
     [apiTasks]
   );
 
-  const sync = useCallback(async () => {
+  const syncLocal = useCallback(async () => {
+    await db.tasks.bulkPut(localTasks);
+  }, [localTasks]);
+
+  const syncRemote = useCallback(async () => {
     await request(localTasks);
     await fetch();
-  }, [localTasks, request]);
+  }, [fetch, localTasks, request]);
 
   useEffect(() => {
     setLocalTasks(apiTasks);
@@ -81,8 +86,9 @@ const App = () => {
 
   return (
     <Container>
-      <Button onClick={sync}>Sync</Button>
       <Button onClick={addTask}>Add</Button>
+      <Button onClick={syncLocal}>SyncLocal</Button>
+      <Button onClick={syncRemote}>SyncRemote</Button>
       <VStack alignItems="flex-start">
         {localTasks.map((task) => (
           <TaskCard key={task.taskId} task={task} saveTask={saveTask} />

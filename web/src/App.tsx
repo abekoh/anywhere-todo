@@ -3,6 +3,7 @@ import { useGetTask, useSyncTask } from "./api/tasks";
 import { TaskCard } from "./components/Card";
 import React, { useCallback, useEffect, useState } from "react";
 import { Task } from "./types";
+import { ulid } from "ulid";
 
 const App = () => {
   const { data: apiTasks } = useGetTask({
@@ -33,6 +34,18 @@ const App = () => {
 
   const [localTasks, setLocalTasks] = useState<Task[]>([]);
 
+  const addTask = useCallback(() => {
+    setLocalTasks((prev) => {
+      const newTask: Task = {
+        taskId: ulid(), // FIXME: reassigned when synced
+        title: "",
+        done: false,
+        draftStatus: "new",
+      };
+      return [...prev, newTask].sort((a, b) => (a.taskId < b.taskId ? -1 : 1));
+    });
+  }, []);
+
   const saveTask = useCallback(
     (draftedTask: Task) => {
       const syncedTarget = apiTasks.find(
@@ -51,7 +64,7 @@ const App = () => {
     [apiTasks]
   );
 
-  const handleSync = useCallback(async () => {
+  const sync = useCallback(async () => {
     await request(localTasks);
   }, [localTasks, request]);
 
@@ -65,7 +78,8 @@ const App = () => {
 
   return (
     <Container>
-      <Button onClick={handleSync}>Sync</Button>
+      <Button onClick={sync}>Sync</Button>
+      <Button onClick={addTask}>Add</Button>
       <VStack alignItems="flex-start">
         {localTasks.map((task) => (
           <TaskCard key={task.taskId} task={task} saveTask={saveTask} />

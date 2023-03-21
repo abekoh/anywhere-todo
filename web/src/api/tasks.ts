@@ -29,8 +29,10 @@ const syncTasks = async (tasks: Task[]): Promise<Task[]> => {
   const newTasks: NewTask[] = tasks
     .filter((task) => task.draftStatus === "new")
     .map((task) => ({
+      taskId: task.taskId,
       title: task.title,
       detail: task.detail,
+      done: task.done,
       deadline: task.deadline,
     }));
   const updatedTasks: UpdatedTask[] = tasks

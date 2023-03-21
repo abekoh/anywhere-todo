@@ -2,7 +2,7 @@ import { Button, Container, Spinner, useToast, VStack } from "@chakra-ui/react";
 import { useGetTask, useSyncTask } from "./api/tasks";
 import { TaskCard } from "./components/Card";
 import React, { useCallback, useEffect, useState } from "react";
-import { DraftedTask, Task } from "./types";
+import { Task } from "./types";
 
 const App = () => {
   const { data: apiTasks } = useGetTask({
@@ -34,7 +34,7 @@ const App = () => {
   const [localTasks, setLocalTasks] = useState<Task[]>([]);
 
   const saveTask = useCallback(
-    (draftedTask: DraftedTask) => {
+    (draftedTask: Task) => {
       const syncedTarget = apiTasks.find(
         (t) => t.taskId === draftedTask.taskId
       );

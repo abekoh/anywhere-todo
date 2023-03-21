@@ -7,11 +7,11 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import React from "react";
-import { DraftedTask } from "../types";
+import { Task } from "../types";
 
 type Props = {
-  task: DraftedTask;
-  saveTask: (draftedTask: DraftedTask) => void;
+  task: Task;
+  saveTask: (draftedTask: Task) => void;
 };
 
 export const TaskCard: React.FC<Props> = ({ task, saveTask }) => {
@@ -21,8 +21,7 @@ export const TaskCard: React.FC<Props> = ({ task, saveTask }) => {
   };
 
   const handleInputChange =
-    (key: keyof DraftedTask) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (key: keyof Task) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       saveTask({ ...task, [key]: value });
     };

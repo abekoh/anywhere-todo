@@ -14,8 +14,6 @@ export type Task = {
   draftStatus: DraftStatus;
 };
 
-export type DraftedTask = Omit<Task, "draftStatus">;
-
 type NewTask = {
   title: string;
   detail?: string;

@@ -23,7 +23,6 @@ const App = () => {
           a.taskId < b.taskId ? -1 : 1
         )
       );
-      await syncLocal();
     },
   });
 

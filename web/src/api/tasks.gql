@@ -33,3 +33,14 @@ mutation UpdateTask(
     deadline
   }
 }
+
+mutation SyncTasks($tasks: SyncTasks!) {
+  syncTasks(input: $tasks) {
+    taskId
+    taskLogId
+    title
+    detail
+    done
+    deadline
+  }
+}

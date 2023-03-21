@@ -7,11 +7,11 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import React from "react";
-import { Task } from "../types";
+import { DraftedTask } from "../types";
 
 type Props = {
-  task: Task;
-  updateTask: (task: Task) => void;
+  task: DraftedTask;
+  saveTask: (draftedTask: DraftedTask) => void;
 };
 
 export const TaskCard: React.FC<Props> = ({ task }) => (

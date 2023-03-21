@@ -1,23 +1,29 @@
 import { Container, Spinner, VStack } from "@chakra-ui/react";
-import { useTask } from "./api/tasks";
+import { useGetTask } from "./api/tasks";
 import { TaskCard } from "./components/Card";
 import React, { useCallback, useEffect, useState } from "react";
-import { Task } from "./types";
+import { DraftedTask, Task } from "./types";
 
-const app = () => {
-  const { data: apiTasks } = useTask({
+const App = () => {
+  const { data: apiTasks } = useGetTask({
     refreshInterval: 3000,
   });
 
   const [localTasks, setLocalTasks] = useState<Task[]>([]);
 
-  const updateTask = useCallback(
-    (task: Task) => {
-      setLocalTasks((tasks) =>
-        tasks.map((t) => (t.taskId === task.taskId ? task : t))
+  const saveTask = useCallback(
+    (draftedTask: DraftedTask) => {
+      const syncedTarget = apiTasks.find(
+        (t) => t.taskId === draftedTask.taskId
       );
+      const updated: Task = syncedTarget
+        ? { ...draftedTask, draftStatus: "updated" }
+        : { ...draftedTask, draftStatus: "new" };
+      setLocalTasks((prev) => {
+        return [...prev.filter((t) => t.taskId !== updated.taskId), updated];
+      });
     },
-    [setLocalTasks]
+    [apiTasks]
   );
 
   useEffect(() => {
@@ -32,11 +38,11 @@ const app = () => {
     <Container>
       <VStack alignItems="flex-start">
         {localTasks.map((task) => (
-          <TaskCard key={task.taskId} task={task} updateTask={updateTask} />
+          <TaskCard key={task.taskId} task={task} saveTask={saveTask} />
         ))}
       </VStack>
     </Container>
   );
 };
 
-export default app;
+export default App;

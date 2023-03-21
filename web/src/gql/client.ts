@@ -20,12 +20,18 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   createTask: Task;
+  syncTasks: Array<Task>;
   updateTask: Task;
 };
 
 
 export type MutationCreateTaskArgs = {
   input: NewTask;
+};
+
+
+export type MutationSyncTasksArgs = {
+  input: SyncTasks;
 };
 
 
@@ -52,6 +58,11 @@ export type SubTask = {
   subTaskId: Scalars['ID'];
   subTaskLogId: Scalars['ID'];
   title: Scalars['String'];
+};
+
+export type SyncTasks = {
+  newTasks: Array<NewTask>;
+  updatedTasks: Array<UpdatedTask>;
 };
 
 export type Task = {
@@ -89,6 +100,13 @@ export type UpdateTaskMutationVariables = Exact<{
 
 export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', taskId: string, taskLogId: string, title: string, detail?: string | null, done: boolean, deadline?: any | null } };
 
+export type SyncTasksMutationVariables = Exact<{
+  tasks: SyncTasks;
+}>;
+
+
+export type SyncTasksMutation = { __typename?: 'Mutation', syncTasks: Array<{ __typename?: 'Task', taskId: string, taskLogId: string, title: string, detail?: string | null, done: boolean, deadline?: any | null }> };
+
 
 export const AllTasksDocument = gql`
     query AllTasks {
@@ -116,6 +134,18 @@ export const UpdateTaskDocument = gql`
   }
 }
     `;
+export const SyncTasksDocument = gql`
+    mutation SyncTasks($tasks: SyncTasks!) {
+  syncTasks(input: $tasks) {
+    taskId
+    taskLogId
+    title
+    detail
+    done
+    deadline
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -123,6 +153,7 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 const AllTasksDocumentString = print(AllTasksDocument);
 const UpdateTaskDocumentString = print(UpdateTaskDocument);
+const SyncTasksDocumentString = print(SyncTasksDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     AllTasks(variables?: AllTasksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: AllTasksQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
@@ -130,6 +161,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     UpdateTask(variables: UpdateTaskMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: UpdateTaskMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateTaskMutation>(UpdateTaskDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateTask', 'mutation');
+    },
+    SyncTasks(variables: SyncTasksMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: SyncTasksMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SyncTasksMutation>(SyncTasksDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SyncTasks', 'mutation');
     }
   };
 }

@@ -1,6 +1,6 @@
 import { Task } from "../types";
 import { GraphQLClient } from "graphql-request";
-import { getSdk } from "../gql/client";
+import { getSdk, NewTask, UpdatedTask } from "../gql/client";
 import useSWR, { SWRConfiguration } from "swr";
 import { useMutation, UseMutationOption } from "./use-mutation";
 
@@ -21,36 +21,43 @@ const tasks = async (): Promise<Task[]> => {
     detail: task.detail ?? undefined,
     done: task.done,
     deadline: task.deadline ? new Date(task.deadline) : undefined,
+    draftStatus: "synced",
   }));
 };
 
-const updateTask = async (task: Task): Promise<Task> => {
-  const res = await setupSdk().UpdateTask({
+const syncTasks = async (tasks: Task[]): Promise<Task[]> => {
+  const newTasks: NewTask[] = tasks
+    .filter((task) => task.draftStatus === "new")
+    .map((task) => ({
+      title: task.title,
+      detail: task.detail,
+      deadline: task.deadline,
+    }));
+  const updatedTasks: UpdatedTask[] = tasks
+    .filter((task) => task.draftStatus === "updated")
+    .map((task) => ({
+      taskId: task.taskId,
+      title: task.title,
+      detail: task.detail,
+      done: task.done,
+      deadline: task.deadline,
+    }));
+  const res = await setupSdk().SyncTasks({ tasks: { newTasks, updatedTasks } });
+  return res.data.syncTasks.map((task) => ({
     taskId: task.taskId,
+    taskLogId: task.taskLogId,
     title: task.title,
     detail: task.detail ?? undefined,
     done: task.done,
-    deadline: task.deadline ? task.deadline.toISOString() : undefined,
-  });
-  if (!res.data) {
-    throw new Error("failed");
-  }
-  return {
-    taskId: res.data.updateTask.taskId,
-    taskLogId: res.data.updateTask.taskLogId,
-    title: res.data.updateTask.title,
-    detail: res.data.updateTask.detail ?? undefined,
-    done: res.data.updateTask.done,
-    deadline: res.data.updateTask.deadline
-      ? new Date(res.data.updateTask.deadline)
-      : undefined,
-  };
+    deadline: task.deadline ? new Date(task.deadline) : undefined,
+    draftStatus: "synced",
+  }));
 };
 
-export const useTask = (options?: SWRConfiguration<Task[], Error>) => {
+export const useGetTask = (options?: SWRConfiguration<Task[], Error>) => {
   return useSWR<Task[], Error>("tasks", tasks, options);
 };
 
-export const useUpdateTask = (mutateOptions?: UseMutationOption<Task>) => {
-  return useMutation(updateTask, mutateOptions);
+export const useSyncTask = (mutateOptions?: UseMutationOption<Task[]>) => {
+  return useMutation(syncTasks, mutateOptions);
 };

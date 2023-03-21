@@ -21,13 +21,14 @@ const tasks = async (): Promise<Task[]> => {
     detail: task.detail ?? undefined,
     done: task.done,
     deadline: task.deadline ? new Date(task.deadline) : undefined,
-    draftStatus: "synced",
+    valueStatus: "unchanged",
+    syncStatus: "remote",
   }));
 };
 
 const syncTasks = async (tasks: Task[]): Promise<Task[]> => {
   const newTasks: NewTask[] = tasks
-    .filter((task) => task.draftStatus === "new")
+    .filter((task) => task.valueStatus === "new")
     .map((task) => ({
       taskId: task.taskId,
       title: task.title,
@@ -36,7 +37,7 @@ const syncTasks = async (tasks: Task[]): Promise<Task[]> => {
       deadline: task.deadline,
     }));
   const updatedTasks: UpdatedTask[] = tasks
-    .filter((task) => task.draftStatus === "updated")
+    .filter((task) => task.valueStatus === "updated")
     .map((task) => ({
       taskId: task.taskId,
       title: task.title,
@@ -52,7 +53,8 @@ const syncTasks = async (tasks: Task[]): Promise<Task[]> => {
     detail: task.detail ?? undefined,
     done: task.done,
     deadline: task.deadline ? new Date(task.deadline) : undefined,
-    draftStatus: "synced",
+    valueStatus: "unchanged",
+    syncStatus: "remote",
   }));
 };
 

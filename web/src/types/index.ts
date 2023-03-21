@@ -2,7 +2,9 @@ export type TaskId = string;
 
 export type TaskLogId = string;
 
-export type DraftStatus = "synced" | "new" | "updated";
+export type ValueStatus = "unchanged" | "new" | "updated";
+
+export type SyncStatus = "unsaved" | "local" | "remote";
 
 export type Task = {
   taskId: TaskId;
@@ -11,5 +13,6 @@ export type Task = {
   detail?: string;
   done: boolean;
   deadline?: Date;
-  draftStatus: DraftStatus;
+  valueStatus: ValueStatus;
+  syncStatus: SyncStatus;
 };

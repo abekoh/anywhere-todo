@@ -43,7 +43,8 @@ const App = () => {
         taskId: ulid(), // FIXME: reassigned when synced
         title: "",
         done: false,
-        draftStatus: "new",
+        valueStatus: "new",
+        syncStatus: "unsaved",
       };
       return [...prev, newTask].sort((a, b) => (a.taskId < b.taskId ? -1 : 1));
     });
@@ -55,8 +56,8 @@ const App = () => {
         (t) => t.taskId === draftedTask.taskId
       );
       const updated: Task = syncedTarget
-        ? { ...draftedTask, draftStatus: "updated" }
-        : { ...draftedTask, draftStatus: "new" };
+        ? { ...draftedTask, valueStatus: "updated", syncStatus: "unsaved" }
+        : { ...draftedTask, valueStatus: "new", syncStatus: "unsaved" };
       setLocalTasks((prev) => {
         return [
           ...prev.filter((t) => t.taskId !== updated.taskId),

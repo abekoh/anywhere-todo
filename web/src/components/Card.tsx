@@ -52,7 +52,10 @@ export const TaskCard: React.FC<Props> = ({ task, saveTask }) => {
             onChange={handleInputChange("detail")}
           ></Input>
           <Tag size="sm" mt={2}>
-            {task.draftStatus.toUpperCase()}
+            {task.valueStatus.toUpperCase()}
+          </Tag>
+          <Tag size="sm" mt={2}>
+            {task.syncStatus.toUpperCase()}
           </Tag>
         </CardBody>
       </Stack>

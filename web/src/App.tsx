@@ -11,6 +11,7 @@ const App = () => {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
+    loadingTimeout: 2000,
     onSuccess: async (data) => {
       const cached = (await db.tasks.toArray()).filter(
         (t) => t.valueStatus !== "unchanged" && !t.synced
@@ -23,6 +24,10 @@ const App = () => {
           a.taskId < b.taskId ? -1 : 1
         )
       );
+    },
+    onError: async (err) => {
+      const cached = await db.tasks.toArray();
+      setLocalTasks(cached.sort((a, b) => (a.taskId < b.taskId ? -1 : 1)));
     },
   });
 
@@ -66,7 +71,7 @@ const App = () => {
 
   const saveTask = useCallback(
     (draftedTask: Task) => {
-      const syncedTarget = apiTasks.find(
+      const syncedTarget = (apiTasks ?? []).find(
         (t) => t.taskId === draftedTask.taskId
       );
       const updated: Task = syncedTarget

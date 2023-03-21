@@ -78,10 +78,35 @@ export type AllTasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', taskId: string, taskLogId: string, title: string, detail?: string | null, done: boolean, deadline?: any | null }> };
 
+export type UpdateTaskMutationVariables = Exact<{
+  taskId: Scalars['ID'];
+  title?: InputMaybe<Scalars['String']>;
+  detail?: InputMaybe<Scalars['String']>;
+  done?: InputMaybe<Scalars['Boolean']>;
+  deadline?: InputMaybe<Scalars['Time']>;
+}>;
+
+
+export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', taskId: string, taskLogId: string, title: string, detail?: string | null, done: boolean, deadline?: any | null } };
+
 
 export const AllTasksDocument = gql`
     query AllTasks {
   tasks {
+    taskId
+    taskLogId
+    title
+    detail
+    done
+    deadline
+  }
+}
+    `;
+export const UpdateTaskDocument = gql`
+    mutation UpdateTask($taskId: ID!, $title: String, $detail: String, $done: Boolean, $deadline: Time) {
+  updateTask(
+    input: {taskId: $taskId, title: $title, detail: $detail, done: $done, deadline: $deadline}
+  ) {
     taskId
     taskLogId
     title
@@ -97,10 +122,14 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 const AllTasksDocumentString = print(AllTasksDocument);
+const UpdateTaskDocumentString = print(UpdateTaskDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     AllTasks(variables?: AllTasksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: AllTasksQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<AllTasksQuery>(AllTasksDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllTasks', 'query');
+    },
+    UpdateTask(variables: UpdateTaskMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data: UpdateTaskMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateTaskMutation>(UpdateTaskDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateTask', 'mutation');
     }
   };
 }

@@ -1,11 +1,11 @@
 import { Container, Spinner, VStack } from "@chakra-ui/react";
-import { useTaskAPI } from "./api/tasks";
+import { useTask } from "./api/tasks";
 import { TaskCard } from "./components/Card";
 import React, { useCallback, useEffect, useState } from "react";
 import { Task } from "./types";
 
 const app = () => {
-  const { data: apiTasks } = useTaskAPI({
+  const { data: apiTasks } = useTask({
     refreshInterval: 3000,
   });
 

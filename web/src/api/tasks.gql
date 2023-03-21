@@ -8,3 +8,28 @@ query AllTasks {
     deadline
   }
 }
+
+mutation UpdateTask(
+  $taskId: ID!
+  $title: String
+  $detail: String
+  $done: Boolean
+  $deadline: Time
+) {
+  updateTask(
+    input: {
+      taskId: $taskId
+      title: $title
+      detail: $detail
+      done: $done
+      deadline: $deadline
+    }
+  ) {
+    taskId
+    taskLogId
+    title
+    detail
+    done
+    deadline
+  }
+}

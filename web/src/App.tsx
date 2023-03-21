@@ -6,13 +6,15 @@ import { Task } from "./types";
 import { ulid } from "ulid";
 
 const App = () => {
-  const { data: apiTasks } = useGetTask({
-    refreshInterval: 3000,
+  const { data: apiTasks, mutate: fetch } = useGetTask({
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
   });
 
   const toast = useToast();
 
-  const { request } = useSyncTask({
+  const { request, requesting } = useSyncTask({
     onSuccess: () => {
       toast({
         title: "Synced!",
@@ -66,13 +68,14 @@ const App = () => {
 
   const sync = useCallback(async () => {
     await request(localTasks);
+    await fetch();
   }, [localTasks, request]);
 
   useEffect(() => {
     setLocalTasks(apiTasks);
   }, [setLocalTasks, apiTasks]);
 
-  if (!localTasks) {
+  if (!localTasks || requesting) {
     return <Spinner />;
   }
 
@@ -88,5 +91,4 @@ const App = () => {
     </Container>
   );
 };
-
 export default App;

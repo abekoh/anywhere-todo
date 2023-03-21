@@ -11,6 +11,12 @@ const App = () => {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
+    onSuccess: async (data) => {
+      const cached = await db.tasks.toArray();
+      const unsaved = cached.filter((t) => t.syncStatus === "local");
+      // FIXME: should be remain latest
+      setLocalTasks([...data, ...unsaved]);
+    },
   });
 
   const toast = useToast();

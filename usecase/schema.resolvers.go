@@ -9,28 +9,12 @@ import (
 	"errors"
 	"fmt"
 
-<<<<<<< HEAD
-	"github.com/abekoh/everywhere-todo/ctxx"
-	"github.com/abekoh/everywhere-todo/domain/model/task"
-	"github.com/abekoh/everywhere-todo/graph"
-	"github.com/abekoh/everywhere-todo/graph/model"
-	"github.com/abekoh/everywhere-todo/sqlc"
-	ulid "github.com/oklog/ulid/v2"
-||||||| 95900c9
-	"github.com/abekoh/everywhere-todo/ctxx"
-	"github.com/abekoh/everywhere-todo/domain/model/task"
-	"github.com/abekoh/everywhere-todo/graph"
-	"github.com/abekoh/everywhere-todo/graph/model"
-	"github.com/abekoh/everywhere-todo/sqlc"
-	"github.com/oklog/ulid/v2"
-=======
 	"github.com/abekoh/anywhere-todo/ctxx"
 	"github.com/abekoh/anywhere-todo/domain/model/task"
 	"github.com/abekoh/anywhere-todo/graph"
 	"github.com/abekoh/anywhere-todo/graph/model"
 	"github.com/abekoh/anywhere-todo/sqlc"
-	"github.com/oklog/ulid/v2"
->>>>>>> origin/main
+	ulid "github.com/oklog/ulid/v2"
 	perrors "github.com/pkg/errors"
 )
 

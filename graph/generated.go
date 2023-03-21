@@ -349,7 +349,7 @@ func (ec *executionContext) field_Mutation_syncTasks_args(ctx context.Context, r
 	var arg0 model.SyncTasks
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNSyncTasks2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx, tmp)
+		arg0, err = ec.unmarshalNSyncTasks2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -596,7 +596,7 @@ func (ec *executionContext) _Mutation_syncTasks(ctx context.Context, field graph
 	}
 	res := resTmp.([]*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_syncTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3253,7 +3253,7 @@ func (ec *executionContext) unmarshalInputSyncTasks(ctx context.Context, obj int
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newTasks"))
-			it.NewTasks, err = ec.unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTaskᚄ(ctx, v)
+			it.NewTasks, err = ec.unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐNewTaskᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3261,7 +3261,7 @@ func (ec *executionContext) unmarshalInputSyncTasks(ctx context.Context, obj int
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedTasks"))
-			it.UpdatedTasks, err = ec.unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTaskᚄ(ctx, v)
+			it.UpdatedTasks, err = ec.unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTaskᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3948,7 +3948,7 @@ func (ec *executionContext) unmarshalNNewTask2githubᚗcomᚋabekohᚋanywhere�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTaskᚄ(ctx context.Context, v interface{}) ([]*model.NewTask, error) {
+func (ec *executionContext) unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐNewTaskᚄ(ctx context.Context, v interface{}) ([]*model.NewTask, error) {
 	var vSlice []interface{}
 	if v != nil {
 		vSlice = graphql.CoerceList(v)
@@ -3957,7 +3957,7 @@ func (ec *executionContext) unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋever
 	res := make([]*model.NewTask, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNNewTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNNewTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -3965,7 +3965,7 @@ func (ec *executionContext) unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋever
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalNNewTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx context.Context, v interface{}) (*model.NewTask, error) {
+func (ec *executionContext) unmarshalNNewTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx context.Context, v interface{}) (*model.NewTask, error) {
 	res, err := ec.unmarshalInputNewTask(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
@@ -4039,18 +4039,12 @@ func (ec *executionContext) marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋanywhere�
 	return ec._SubTask(ctx, sel, v)
 }
 
-<<<<<<< HEAD
-func (ec *executionContext) unmarshalNSyncTasks2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx context.Context, v interface{}) (model.SyncTasks, error) {
+func (ec *executionContext) unmarshalNSyncTasks2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx context.Context, v interface{}) (model.SyncTasks, error) {
 	res, err := ec.unmarshalInputSyncTasks(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
-||||||| 95900c9
-func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
-=======
 func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
->>>>>>> origin/main
 	return ec._Task(ctx, sel, &v)
 }
 
@@ -4113,7 +4107,7 @@ func (ec *executionContext) unmarshalNUpdatedTask2githubᚗcomᚋabekohᚋanywhe
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTaskᚄ(ctx context.Context, v interface{}) ([]*model.UpdatedTask, error) {
+func (ec *executionContext) unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTaskᚄ(ctx context.Context, v interface{}) ([]*model.UpdatedTask, error) {
 	var vSlice []interface{}
 	if v != nil {
 		vSlice = graphql.CoerceList(v)
@@ -4122,7 +4116,7 @@ func (ec *executionContext) unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋ
 	res := make([]*model.UpdatedTask, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNUpdatedTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNUpdatedTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -4130,7 +4124,7 @@ func (ec *executionContext) unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋ
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalNUpdatedTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx context.Context, v interface{}) (*model.UpdatedTask, error) {
+func (ec *executionContext) unmarshalNUpdatedTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx context.Context, v interface{}) (*model.UpdatedTask, error) {
 	res, err := ec.unmarshalInputUpdatedTask(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }

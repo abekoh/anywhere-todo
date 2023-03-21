@@ -6,6 +6,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/abekoh/everywhere-todo/ctxx"
@@ -13,7 +14,7 @@ import (
 	"github.com/abekoh/everywhere-todo/graph"
 	"github.com/abekoh/everywhere-todo/graph/model"
 	"github.com/abekoh/everywhere-todo/sqlc"
-	"github.com/oklog/ulid/v2"
+	ulid "github.com/oklog/ulid/v2"
 	perrors "github.com/pkg/errors"
 )
 
@@ -79,6 +80,31 @@ func (r *mutationResolver) UpdateTask(ctx context.Context, input model.UpdatedTa
 		Done:      newVt.Done,
 		Deadline:  newVt.Deadline,
 	}, nil
+}
+
+// SyncTasks is the resolver for the syncTasks field.
+func (r *mutationResolver) SyncTasks(ctx context.Context, input model.SyncTasks) ([]*model.Task, error) {
+	var tasks []*model.Task
+	var err error
+	addRes := func(task *model.Task, err error) {
+		if err != nil {
+			err = errors.Join(err)
+		}
+		if task != nil {
+			tasks = append(tasks, task)
+		}
+	}
+	for _, newTask := range input.NewTasks {
+		if newTask != nil {
+			addRes(r.CreateTask(ctx, *newTask))
+		}
+	}
+	for _, updatedTask := range input.UpdatedTasks {
+		if updatedTask != nil {
+			addRes(r.UpdateTask(ctx, *updatedTask))
+		}
+	}
+	return tasks, err
 }
 
 // Tasks is the resolver for the tasks field.

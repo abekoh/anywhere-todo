@@ -21,6 +21,11 @@ type SubTask struct {
 	Deadline     *time.Time `json:"deadline"`
 }
 
+type SyncTasks struct {
+	NewTasks     []*NewTask     `json:"newTasks"`
+	UpdatedTasks []*UpdatedTask `json:"updatedTasks"`
+}
+
 type UpdatedTask struct {
 	TaskID   string     `json:"taskId"`
 	Title    *string    `json:"title"`

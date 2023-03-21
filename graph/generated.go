@@ -49,6 +49,7 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Mutation struct {
 		CreateTask func(childComplexity int, input model.NewTask) int
+		SyncTasks  func(childComplexity int, input model.SyncTasks) int
 		UpdateTask func(childComplexity int, input model.UpdatedTask) int
 	}
 
@@ -79,6 +80,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateTask(ctx context.Context, input model.NewTask) (*model.Task, error)
 	UpdateTask(ctx context.Context, input model.UpdatedTask) (*model.Task, error)
+	SyncTasks(ctx context.Context, input model.SyncTasks) ([]*model.Task, error)
 }
 type QueryResolver interface {
 	Tasks(ctx context.Context) ([]*model.Task, error)
@@ -113,6 +115,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateTask(childComplexity, args["input"].(model.NewTask)), true
+
+	case "Mutation.syncTasks":
+		if e.complexity.Mutation.SyncTasks == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_syncTasks_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.SyncTasks(childComplexity, args["input"].(model.SyncTasks)), true
 
 	case "Mutation.updateTask":
 		if e.complexity.Mutation.UpdateTask == nil {
@@ -233,6 +247,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputNewTask,
+		ec.unmarshalInputSyncTasks,
 		ec.unmarshalInputUpdatedTask,
 	)
 	first := true
@@ -320,6 +335,21 @@ func (ec *executionContext) field_Mutation_createTask_args(ctx context.Context, 
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNNewTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_syncTasks_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.SyncTasks
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNSyncTasks2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -532,6 +562,77 @@ func (ec *executionContext) fieldContext_Mutation_updateTask(ctx context.Context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_updateTask_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_syncTasks(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_syncTasks(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().SyncTasks(rctx, fc.Args["input"].(model.SyncTasks))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Task)
+	fc.Result = res
+	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_syncTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "taskId":
+				return ec.fieldContext_Task_taskId(ctx, field)
+			case "taskLogId":
+				return ec.fieldContext_Task_taskLogId(ctx, field)
+			case "title":
+				return ec.fieldContext_Task_title(ctx, field)
+			case "detail":
+				return ec.fieldContext_Task_detail(ctx, field)
+			case "done":
+				return ec.fieldContext_Task_done(ctx, field)
+			case "deadline":
+				return ec.fieldContext_Task_deadline(ctx, field)
+			case "subTasks":
+				return ec.fieldContext_Task_subTasks(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Task", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_syncTasks_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -3118,6 +3219,42 @@ func (ec *executionContext) unmarshalInputNewTask(ctx context.Context, obj inter
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputSyncTasks(ctx context.Context, obj interface{}) (model.SyncTasks, error) {
+	var it model.SyncTasks
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"newTasks", "updatedTasks"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "newTasks":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newTasks"))
+			it.NewTasks, err = ec.unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTaskᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "updatedTasks":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedTasks"))
+			it.UpdatedTasks, err = ec.unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTaskᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdatedTask(ctx context.Context, obj interface{}) (model.UpdatedTask, error) {
 	var it model.UpdatedTask
 	asMap := map[string]interface{}{}
@@ -3218,6 +3355,15 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_updateTask(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "syncTasks":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_syncTasks(ctx, field)
 			})
 
 			if out.Values[i] == graphql.Null {
@@ -3786,6 +3932,28 @@ func (ec *executionContext) unmarshalNNewTask2githubᚗcomᚋabekohᚋeverywhere
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNNewTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTaskᚄ(ctx context.Context, v interface{}) ([]*model.NewTask, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*model.NewTask, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNNewTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalNNewTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx context.Context, v interface{}) (*model.NewTask, error) {
+	res, err := ec.unmarshalInputNewTask(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3855,6 +4023,11 @@ func (ec *executionContext) marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋeverywher
 	return ec._SubTask(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNSyncTasks2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx context.Context, v interface{}) (model.SyncTasks, error) {
+	res, err := ec.unmarshalInputSyncTasks(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
 	return ec._Task(ctx, sel, &v)
 }
@@ -3916,6 +4089,28 @@ func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋabekohᚋeverywhere�
 func (ec *executionContext) unmarshalNUpdatedTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx context.Context, v interface{}) (model.UpdatedTask, error) {
 	res, err := ec.unmarshalInputUpdatedTask(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNUpdatedTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTaskᚄ(ctx context.Context, v interface{}) ([]*model.UpdatedTask, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*model.UpdatedTask, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNUpdatedTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalNUpdatedTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx context.Context, v interface{}) (*model.UpdatedTask, error) {
+	res, err := ec.unmarshalInputUpdatedTask(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

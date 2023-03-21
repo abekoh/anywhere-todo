@@ -37,7 +37,13 @@ input UpdatedTask {
     deadline: Time
 }
 
+input SyncTasks {
+    newTasks: [NewTask!]!
+    updatedTasks: [UpdatedTask!]!
+}
+
 type Mutation {
     createTask(input: NewTask!): Task!
     updateTask(input: UpdatedTask!): Task!
+    syncTasks(input: SyncTasks!): [Task!]!
 }

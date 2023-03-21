@@ -13,17 +13,3 @@ export type Task = {
   deadline?: Date;
   draftStatus: DraftStatus;
 };
-
-type NewTask = {
-  title: string;
-  detail?: string;
-  deadline?: Date;
-};
-
-type UpdatedTask = {
-  taskId: TaskId;
-  title?: string;
-  detail?: string;
-  done?: boolean;
-  deadline?: Date;
-};

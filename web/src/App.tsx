@@ -12,10 +12,17 @@ const App = () => {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     onSuccess: async (data) => {
-      const cached = await db.tasks.toArray();
-      const savedLocal = cached.filter((t) => t.syncStatus === "local");
+      const cached = (await db.tasks.toArray()).filter(
+        (t) => t.syncStatus === "local"
+      );
+      const cachedIds = cached.map((t) => t.taskId);
+      const remoteFiltered = data.filter((t) => !cachedIds.includes(t.taskId));
       // FIXME: should be remain latest
-      setLocalTasks([...data, ...savedLocal]);
+      setLocalTasks(
+        [...remoteFiltered, ...cached].sort((a, b) =>
+          a.taskId < b.taskId ? -1 : 1
+        )
+      );
     },
   });
 

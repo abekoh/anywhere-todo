@@ -20,7 +20,10 @@ const App = () => {
         ? { ...draftedTask, draftStatus: "updated" }
         : { ...draftedTask, draftStatus: "new" };
       setLocalTasks((prev) => {
-        return [...prev.filter((t) => t.taskId !== updated.taskId), updated];
+        return [
+          ...prev.filter((t) => t.taskId !== updated.taskId),
+          updated,
+        ].sort((a, b) => (a.taskId < b.taskId ? -1 : 1));
       });
     },
     [apiTasks]
@@ -36,6 +39,7 @@ const App = () => {
 
   return (
     <Container>
+      <p>{JSON.stringify(localTasks)}</p>
       <VStack alignItems="flex-start">
         {localTasks.map((task) => (
           <TaskCard key={task.taskId} task={task} saveTask={saveTask} />

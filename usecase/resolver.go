@@ -2,7 +2,7 @@
 package usecase
 
 import (
-	"github.com/abekoh/everywhere-todo/domain/model/task/taskrepo"
+	"github.com/abekoh/anywhere-todo/domain/model/task/taskrepo"
 )
 
 // This file will not be regenerated automatically.

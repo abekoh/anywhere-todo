@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"github.com/abekoh/everywhere-todo/graph/model"
-	"github.com/abekoh/everywhere-todo/sqlc"
-	"github.com/abekoh/everywhere-todo/utils"
+	"github.com/abekoh/anywhere-todo/graph/model"
+	"github.com/abekoh/anywhere-todo/sqlc"
+	"github.com/abekoh/anywhere-todo/utils"
 )
 
 func MapSlices[S, T any](xs []S, mapper func(x S) T) []T {

@@ -3,10 +3,10 @@ package taskrepo
 import (
 	"context"
 
-	"github.com/abekoh/everywhere-todo/ctxx"
-	"github.com/abekoh/everywhere-todo/domain/model/task"
-	"github.com/abekoh/everywhere-todo/sqlc"
-	"github.com/abekoh/everywhere-todo/utils"
+	"github.com/abekoh/anywhere-todo/ctxx"
+	"github.com/abekoh/anywhere-todo/domain/model/task"
+	"github.com/abekoh/anywhere-todo/sqlc"
+	"github.com/abekoh/anywhere-todo/utils"
 	"github.com/pkg/errors"
 )
 

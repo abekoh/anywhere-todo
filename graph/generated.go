@@ -15,7 +15,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/abekoh/everywhere-todo/graph/model"
+	"github.com/abekoh/anywhere-todo/graph/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -334,7 +334,7 @@ func (ec *executionContext) field_Mutation_createTask_args(ctx context.Context, 
 	var arg0 model.NewTask
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx, tmp)
+		arg0, err = ec.unmarshalNNewTask2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -364,7 +364,7 @@ func (ec *executionContext) field_Mutation_updateTask_args(ctx context.Context, 
 	var arg0 model.UpdatedTask
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNUpdatedTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdatedTask2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -454,7 +454,7 @@ func (ec *executionContext) _Mutation_createTask(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -525,7 +525,7 @@ func (ec *executionContext) _Mutation_updateTask(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -667,7 +667,7 @@ func (ec *executionContext) _Query_tasks(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_tasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1372,7 +1372,7 @@ func (ec *executionContext) _Task_subTasks(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.([]*model.SubTask)
 	fc.Result = res
-	return ec.marshalNSubTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSubTaskᚄ(ctx, field.Selections, res)
+	return ec.marshalNSubTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐSubTaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Task_subTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3943,7 +3943,7 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx context.Context, v interface{}) (model.NewTask, error) {
+func (ec *executionContext) unmarshalNNewTask2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐNewTask(ctx context.Context, v interface{}) (model.NewTask, error) {
 	res, err := ec.unmarshalInputNewTask(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -3985,7 +3985,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNSubTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSubTaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.SubTask) graphql.Marshaler {
+func (ec *executionContext) marshalNSubTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐSubTaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.SubTask) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4009,7 +4009,7 @@ func (ec *executionContext) marshalNSubTask2ᚕᚖgithubᚗcomᚋabekohᚋeveryw
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSubTask(ctx, sel, v[i])
+			ret[i] = ec.marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐSubTask(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4029,7 +4029,7 @@ func (ec *executionContext) marshalNSubTask2ᚕᚖgithubᚗcomᚋabekohᚋeveryw
 	return ret
 }
 
-func (ec *executionContext) marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSubTask(ctx context.Context, sel ast.SelectionSet, v *model.SubTask) graphql.Marshaler {
+func (ec *executionContext) marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐSubTask(ctx context.Context, sel ast.SelectionSet, v *model.SubTask) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4039,16 +4039,22 @@ func (ec *executionContext) marshalNSubTask2ᚖgithubᚗcomᚋabekohᚋeverywher
 	return ec._SubTask(ctx, sel, v)
 }
 
+<<<<<<< HEAD
 func (ec *executionContext) unmarshalNSyncTasks2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐSyncTasks(ctx context.Context, v interface{}) (model.SyncTasks, error) {
 	res, err := ec.unmarshalInputSyncTasks(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
+||||||| 95900c9
+func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
+=======
+func (ec *executionContext) marshalNTask2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
+>>>>>>> origin/main
 	return ec._Task(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Task) graphql.Marshaler {
+func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Task) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4072,7 +4078,7 @@ func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywher
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx, sel, v[i])
+			ret[i] = ec.marshalNTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4092,7 +4098,7 @@ func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋabekohᚋeverywher
 	return ret
 }
 
-func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *model.Task) graphql.Marshaler {
+func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *model.Task) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4102,7 +4108,7 @@ func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋabekohᚋeverywhere�
 	return ec._Task(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNUpdatedTask2githubᚗcomᚋabekohᚋeverywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx context.Context, v interface{}) (model.UpdatedTask, error) {
+func (ec *executionContext) unmarshalNUpdatedTask2githubᚗcomᚋabekohᚋanywhereᚑtodoᚋgraphᚋmodelᚐUpdatedTask(ctx context.Context, v interface{}) (model.UpdatedTask, error) {
 	res, err := ec.unmarshalInputUpdatedTask(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }

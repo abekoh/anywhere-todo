@@ -8,9 +8,9 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/abekoh/everywhere-todo/ctxx"
-	"github.com/abekoh/everywhere-todo/graph"
-	"github.com/abekoh/everywhere-todo/usecase"
+	"github.com/abekoh/anywhere-todo/ctxx"
+	"github.com/abekoh/anywhere-todo/graph"
+	"github.com/abekoh/anywhere-todo/usecase"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"

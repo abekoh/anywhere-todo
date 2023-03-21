@@ -1,4 +1,4 @@
-module github.com/abekoh/everywhere-todo
+module github.com/abekoh/anywhere-todo
 
 go 1.20
 
